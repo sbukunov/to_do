@@ -49,7 +49,7 @@ class NoteDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ("title", "note", "status","public","important", "date_plan", # Эти поля берем из модели
+        fields = ("id", "title", "note", "status","public","important", "date_plan", # Эти поля берем из модели
                   "author") # Это поле берем из сериализатора
 
     #def to_representation(self, instance):

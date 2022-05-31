@@ -105,7 +105,8 @@ class ImportantNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(important=True)
+        user = self.request.user # Выбираем пользователя из request
+        return queryset.filter(important=True, author = user)
 
 class PublicNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
@@ -121,7 +122,8 @@ class ActiveNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(status=1)
+        user = self.request.user # Выбираем пользователя из request
+        return queryset.filter(status=1, author = user)
 
 class HoldNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
@@ -129,7 +131,8 @@ class HoldNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(status=2)
+        user = self.request.user  # Выбираем пользователя из request
+        return queryset.filter(status=2, author = user)
 
 class DoneNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
@@ -137,7 +140,8 @@ class DoneNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(status=3)
+        user = self.request.user  # Выбираем пользователя из request
+        return queryset.filter(status=3, author = user)
 
 class StatusNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
@@ -145,4 +149,5 @@ class StatusNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(status=1 or 3)
+        user = self.request.user  # Выбираем пользователя из request
+        return queryset.filter(status=1 or 3, author = user)
