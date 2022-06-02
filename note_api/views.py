@@ -28,11 +28,6 @@ class NoteListCreateAPIView(ListAPIView):
         queryset = super().get_queryset()
         user = self.request.user
         return queryset.filter(author=user)
-        #user_1 = queryset[6]
-        #if(user == user_1):
-            #return queryset.filter(author = user)
-        #else:
-            #return queryset.filter(public = True)
 
     def post(self, request: Request):
         # Передаем в сериалайзер данные из запроса
@@ -143,11 +138,3 @@ class DoneNoteListAPIView(ListAPIView):
         user = self.request.user  # Выбираем пользователя из request
         return queryset.filter(status=3, author = user)
 
-class StatusNoteListAPIView(ListAPIView):
-    queryset = Note.objects.all()
-    serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user  # Выбираем пользователя из request
-        return queryset.filter(status=1 or 3, author = user)
