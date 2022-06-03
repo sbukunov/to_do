@@ -10,15 +10,6 @@ from . import serializers, filters
 
 class NoteListCreateAPIView(ListAPIView):
     """Представление, которое позволяет вывести весь список и добавить новую запись"""
-
-#class NoteListCreateAPIView(APIView): # Это старый сериализатор
-    #def get(self, request: Request):
-        #objects = Note.objects.all() # Получаем все объекты из БД
-        #serializer = serializers.NoteSerializer(  #Сериализуем данные
-            #instance = objects,
-            #many = True
-        #)
-        #return Response(serializer.data) # Возвращаем JSON-объекты
     queryset = Note.objects.all()
     serializer_class = serializers.NoteSerializer
 
