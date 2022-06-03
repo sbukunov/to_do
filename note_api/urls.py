@@ -12,5 +12,4 @@ urlpatterns = [
     path('api/active/', views.ActiveNoteListAPIView.as_view()),
     path('api/hold/', views.HoldNoteListAPIView.as_view()),
     path('api/done/', views.DoneNoteListAPIView.as_view()),
-    path('api/status/', views.StatusNoteListAPIView.as_view()),
 ]

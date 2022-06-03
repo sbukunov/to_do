@@ -6,7 +6,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 from note.models import Note
-from . import serializers
+from . import serializers, filters
 
 class NoteListCreateAPIView(ListAPIView):
     """Представление, которое позволяет вывести весь список и добавить новую запись"""
@@ -100,8 +100,16 @@ class ImportantNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        user = self.request.user # Выбираем пользователя из request
-        return queryset.filter(important=True, author = user)
+        user = self.request.user  # Выбираем пользователя из request
+        return queryset.filter(author = user)
+
+    # Фильтрация по важности
+    def filter_queryset(self, queryset):
+        queryset = filters.note_by_important_filter(
+            queryset,
+            important=self.request.query_params.get("important", None)
+        )
+        return queryset
 
 class PublicNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
@@ -109,7 +117,15 @@ class PublicNoteListAPIView(ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(public=True)
+        return queryset #Возвращаем полный (нефильтрованный) queryset
+
+    # Фильтрация по важности
+    def filter_queryset(self, queryset):
+        queryset = filters.note_by_public_filter(
+            queryset,
+            public=self.request.query_params.get("public", None)
+        )
+        return queryset
 
 class ActiveNoteListAPIView(ListAPIView):
     queryset = Note.objects.all()
