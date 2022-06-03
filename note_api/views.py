@@ -18,7 +18,7 @@ class NoteListCreateAPIView(ListAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
-        return queryset.filter(author=user)
+        return queryset.filter(author=user) #Показываем только записи текущего пользователя
 
     def post(self, request: Request):
         # Передаем в сериалайзер данные из запроса
@@ -86,6 +86,8 @@ class NoteDetailAPIView(APIView):
         return Response(status = status.HTTP_204_NO_CONTENT) # Возвращаем сообщение "нет содержимого"
 
 class ImportantNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи текущего пользователя
+    с возможностью фильтрации по полю Important"""
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
@@ -103,6 +105,8 @@ class ImportantNoteListAPIView(ListAPIView):
         return queryset
 
 class PublicNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи всех пользователей
+        с возможностью фильтрации по полю Public"""
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
@@ -119,6 +123,8 @@ class PublicNoteListAPIView(ListAPIView):
         return queryset
 
 class ActiveNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи текущего пользователя,
+        для которых поле status = "Активно" """
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
@@ -128,6 +134,8 @@ class ActiveNoteListAPIView(ListAPIView):
         return queryset.filter(status=1, author = user)
 
 class HoldNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи текущего пользователя,
+            для которых поле status = "Отложено" """
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
@@ -137,6 +145,8 @@ class HoldNoteListAPIView(ListAPIView):
         return queryset.filter(status=2, author = user)
 
 class DoneNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи текущего пользователя,
+            для которых поле status = "Выполнено" """
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
