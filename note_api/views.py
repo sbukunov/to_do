@@ -114,7 +114,7 @@ class PublicNoteListAPIView(ListAPIView):
         queryset = super().get_queryset()
         return queryset #Возвращаем полный (нефильтрованный) queryset
 
-    # Фильтрация по важности
+    # Фильтрация по публичности
     def filter_queryset(self, queryset):
         queryset = filters.note_by_public_filter(
             queryset,
@@ -122,36 +122,25 @@ class PublicNoteListAPIView(ListAPIView):
         )
         return queryset
 
-class ActiveNoteListAPIView(ListAPIView):
-    """Представление, которое позволяет вывести записи текущего пользователя,
-        для которых поле status = "Активно" """
+class StatusNoteListAPIView(ListAPIView):
+    """Представление, которое позволяет вывести записи текущего пользователя
+        с возможностью фильтрации по полю status"""
     queryset = Note.objects.all()
     serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user # Выбираем пользователя из request
-        return queryset.filter(status=1, author = user)
+        return queryset.filter(author=user)
+    # Фильтрация по статусу
+    def filter_queryset(self, queryset):
+        queryset = filters.note_by_status_filter(
+            queryset,
+            status=self.request.query_params.get("status", None)
+        )
+        return queryset
 
-class HoldNoteListAPIView(ListAPIView):
-    """Представление, которое позволяет вывести записи текущего пользователя,
-            для которых поле status = "Отложено" """
-    queryset = Note.objects.all()
-    serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user  # Выбираем пользователя из request
-        return queryset.filter(status=2, author = user)
 
-class DoneNoteListAPIView(ListAPIView):
-    """Представление, которое позволяет вывести записи текущего пользователя,
-            для которых поле status = "Выполнено" """
-    queryset = Note.objects.all()
-    serializer_class = serializers.NoteDetailSerializer # Используем уже существующий сериализатор
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user  # Выбираем пользователя из request
-        return queryset.filter(status=3, author = user)
 
