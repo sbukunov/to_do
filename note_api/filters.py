@@ -5,12 +5,21 @@ from note import models
 
 # Фильтр по важности
 def note_by_important_filter(queryset: QuerySet, important: Optional[bool]):
-    return queryset.filter(important=important)
+    if important:
+        return queryset.filter(important=important)
+    else: # Если параметр фильтрации не задан, то возвращаем исходный queryset
+        return queryset
 
 # Фильтр по публичности
 def note_by_public_filter(queryset: QuerySet, public: Optional[bool]):
-    return queryset.filter(public=public)
+    if public:
+        return queryset.filter(public=public)
+    else:
+        return queryset # Если параметр фильтрации не задан, то возвращаем исходный queryset
 
 # Фильтр по статусу
 def note_by_status_filter(queryset: QuerySet, status: Optional[int]):
-    return queryset.filter(status=status)
+    if status:
+        return queryset.filter(status=status)
+    else:
+        return queryset # Если параметр фильтрации не задан, то возвращаем исходный queryset
